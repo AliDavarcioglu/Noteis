@@ -18,4 +18,20 @@
   <body>
     <img src="{%static 'images/noteis.png' %}" alt="image" />
   </body>
+
+
+<body>
+    <h2>Welcome to Home Page</h2>
+    <p>You can navigate to Login or Register page using the buttons below:</p>
+    <!-- Login button -->
+    <form action="{% url 'login' %}" method="get">
+        <button type="submit">Login</button>
+    </form>
+    <!-- Register button -->
+    <form action="{% url 'register' %}" method="get">
+        <button type="submit">Register</button>
+    </form>
+</body>
+
+
 </html>
