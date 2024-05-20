@@ -1,37 +1,54 @@
 {% load static %}
 
 
-# ANA SAYFA BURAYA YAPILACAK
 
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>NoteIs | Homepage</title>
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="{% static 'noteis.ico' %}"
-      type="text/css"
-    />
-  </head>
-  <body>
-    <img src="{%static 'images/noteis.png' %}" alt="image" />
-  </body>
-
+<link rel='stylesheet' href="{% static 'css/style.css' %}" type='text/css'/>
 
 <body>
-    <h2>Welcome to Home Page</h2>
-    <p>You can navigate to Login or Register page using the buttons below:</p>
-    <!-- Login button -->
-    <form action="{% url 'login' %}" method="get">
-        <button type="submit">Login</button>
-    </form>
-    <!-- Register button -->
-    <form action="{% url 'register' %}" method="get">
-        <button type="submit">Register</button>
-    </form>
+    <!--header section start-->
+    <header class ="header">
+        <a href = "#" class="logo">
+            <img src="{%static 'images/noteis.png' %}" alt="image"  />
+        </a>
+        <nav class="navbar">
+            <a href="#" class="active" >Homepage</a>
+            <a href="register.html">Register</a>
+            <a href="login.html">Login</a>
+            <a href="#">Search</a>
+            <a href="#">Personal Home</a>
+            <a href="#">Task List</a>
+            <a href="#">Journal</a>
+            <a href="#">Reading List</a>
+        </nav>
+        <div class="buttons">
+            <button>
+                <i class ="fas fa-search"></i>
+            </button>
+             <button>
+                <i class ="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    <!--! header section end -->
+
+     <!--! home section start -->
+        <section class = "home">
+            <div class= "content">
+                <h3>  </h3>
+            <p> --
+        </p>
+  
+            </div>
+            </section>
+    
+      <!--! home section end -->
 </body>
+</html>
+
+
 
 
 </html>
