@@ -1,25 +1,38 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-</head>
 
-<body>
+    <!-- Latest compiled and minified CSS -->
+  </head>
+
+  <body>
     <h2>Login Page</h2>
+    {% if error_message %}
+    <div class="alert alert-primary" role="alert">{{error_message}}</div>
+    {%endif%}
     <form method="post">
-        {% csrf_token %}
-        <label for="id_email">Email:</label><br>
-        <input type="email" id="id_email" name="email" required>
-        <br><br>
-        <label for="id_password">Password:</label><br>
-        <input type="password" id="id_password" name="password" required>
-        <br><br>
-        <button type="submit">Login</button>
-
+      {% csrf_token %}
+      <label for="id_email">Email:</label><br />
+      <input type="email" id="id_email" name="email" required />
+      <br /><br />
+      <label for="id_password">Password:</label><br />
+      <input type="password" id="id_password" name="password" required />
+      <br /><br />
+      <button type="submit">Login</button>
     </form>
-</body>
 
-
+    <section class="home">
+      <div class="content">
+        <p>123</p>
+        <p>--</p>
+      </div>
+    </section>
+  </body>
 </html>

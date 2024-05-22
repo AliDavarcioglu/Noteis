@@ -91,12 +91,14 @@ section {
 }
 .home .content h3 {
   font-size: 6rem;
-  color: #E7E308;
+  color: #c3f2fd;
+  background-color: #c3f2fd;
 }
 .home .content p {
   font-size: 2rem;
   font-weight: 300;
   line-height: 1.8;
   padding: 1rem 0;
-  color: white;
+  color: #c3f2fd;
+  background-color: #c3f2fd;
 }

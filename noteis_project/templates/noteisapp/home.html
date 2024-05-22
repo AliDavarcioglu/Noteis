@@ -1,8 +1,6 @@
 {% load static %}
 
 
-
-
 <!DOCTYPE html>
 <html>
 <link rel='stylesheet' href="{% static 'css/style.css' %}" type='text/css'/>
@@ -14,10 +12,9 @@
             <img src="{%static 'images/noteis.png' %}" alt="image"  />
         </a>
         <nav class="navbar">
-            <a href="#" class="active" >Homepage</a>
-            <a href="register.html">Register</a>
-            <a href="login.html">Login</a>
-            <a href="#">Search</a>
+            <a href="{% url 'home'%}" class="active" >Homepage</a>
+            <a href="{% url 'register'%}">Register</a>
+            <a href="{% url 'login'%}">Login</a>
             <a href="#">Personal Home</a>
             <a href="#">Task List</a>
             <a href="#">Journal</a>
@@ -37,8 +34,8 @@
      <!--! home section start -->
         <section class = "home">
             <div class= "content">
-                <h3>  </h3>
-            <p> --
+                <h3> </h3>
+            <p> 
         </p>
   
             </div>
