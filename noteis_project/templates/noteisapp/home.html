@@ -1,9 +1,7 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html>
-<link rel='stylesheet' href="{% static 'css/style.css' %}" type='text/css'/>
 
 <body>
     <!--header section start-->
@@ -13,12 +11,11 @@
         </a>
         <nav class="navbar">
             <a href="{% url 'home'%}" class="active" >Homepage</a>
-            <a href="{% url 'register'%}">Register</a>
-            <a href="{% url 'login'%}">Login</a>
-            <a href="#">Personal Home</a>
-            <a href="#">Task List</a>
-            <a href="#">Journal</a>
-            <a href="#">Reading List</a>
+            <a href="{% url 'todo_list'%}">todo list</a>
+            <a href="{% url 'calendar'%}">Calendar</a>
+            <a href="{% url 'reading_list'%}">Reading List</a>
+            <a href="{% url 'quick_notes'%}">Quick Notes</a>
+            <a href="{% url 'login'%}">Log out</a>
         </nav>
         <div class="buttons">
             <button>
@@ -31,21 +28,192 @@
     </header>
     <!--! header section end -->
 
-     <!--! home section start -->
-        <section class = "home">
-            <div class= "content">
-                <h3> </h3>
-            <p> 
-        </p>
-  
-            </div>
-            </section>
-    
-      <!--! home section end -->
+    <!--! home section start -->
+    <section class="home">
+        <div class="content">
+            <ul id="noteList" style="display: flex; flex-wrap: wrap;">
+                {% for key, value in data.items %}
+                <li class="note-item">
+                    <div class="note">
+                        <p>{{ value.baslik }}</p>
+                        <p>{{ value.icerik }}</p>
+                    </div>
+                    <form method="post" action="{% url 'delete_note' key %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn" type="submit">Sil</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+    <!--! home section end -->
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
+
+        :root {
+            --main-color: #c3f2fd;
+            --black-color: #000000;
+            --border: 0.1rem solid rgba(255, 255, 255, 0.4);
+        }
+
+        * {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            text-transform: none;
+            transition: 0.2s ease;
+        }
+
+        html {
+            font-size: 62.5%;
+            overflow-x: hidden;
+            scroll-padding-top: 9rem;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--main-color);
+            height: 100vh;
+        }
+
+        .btn {
+            margin-top: 1rem;
+            display: inline-block;
+            padding: 1rem 1.75rem;
+            border-radius: 20px;
+            font-size: 10px;
+            color: white;
+            background-color: var(--black-color);
+            cursor: pointer;
+        }
+
+        section {
+            padding: 3.5rem 7%;
+        }
+
+        .header .logo img {
+            height: 10rem;
+        }
+
+        .header {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            margin: 2rem 7%;
+            border-radius: 30rem;
+            box-shadow: 0xp 0xp 17xp -2xp rgba(0, 0, 0, 0.75);
+            position: relative;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .navbar a {
+            margin: 0 1rem;
+            font-size: 1.6rem;
+            color: var(--black-color);
+            border-bottom: 0.1rem solid transparent;
+        }
+
+        .header .navbar .active,
+        .header .navbar a:hover {
+            border-color: var(--main-color);
+            padding-bottom: 0.05rem;
+        }
+
+        .header .buttons button {
+            cursor: pointer;
+            font-size: 2.5rem;
+            margin-left: 2rem;
+            background-color: transparent;
+        }
+
+        .home {
+            min-height: 100vh;
+            background: url("../images/background.png") no-repeat;
+            background-size: cover;
+            background-position: center;
+            margin-top: -14.5rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .home .content {
+            max-width: 60rem;
+            font-size: 2rem;
+        }
+
+        .home .content h3 {
+            font-size: 6rem;
+            color: #c3f2fd;
+            background-color: #c3f2fd;
+        }
+
+        .note-item {
+            flex: 0 0 calc(50% - 20px); /* Two items per row */
+            margin-bottom: 20px;
+        }
+
+        .home .content .note {
+            border: var(--border);
+            padding: 1rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .home .content .note h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .home .content .note p {
+            color: #000000;
+        }
+
+        .home .content .delete-btn {
+            background-color: var(--black-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .home .content .delete-btn:hover {
+            background-color: #333333;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustFlexDirection();
+
+            window.addEventListener("resize", function () {
+                adjustFlexDirection();
+            });
+
+            function adjustFlexDirection() {
+                var noteList = document.getElementById("noteList");
+                var listItemWidth = noteList.querySelector(".note-item").offsetWidth;
+                var containerWidth = noteList.offsetWidth;
+
+                if (listItemWidth * 2 > containerWidth) {
+                    noteList.style.flexDirection = "column";
+                } else {
+                    noteList.style.flexDirection = "row";
+                }
+            }
+        });
+    </script>
 </body>
-</html>
-
-
-
 
 </html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar Website</title>
+<style>
+ 
+</style>
+</head>
+<body>
+  <div class="calendar">
+    <div class="month">
+      <span class="prev" onclick="prevMonth()">&#10094;</span>
+      <span id="currentMonth"></span>
+      <span class="next" onclick="nextMonth()">&#10095;</span>
+    </div>
+    <div class="days" id="calendarDays"></div>
+  </div>
+
+  <!-- Form to add events -->
+  <div id="eventForm" style="display: none;">
+    <form onsubmit="addEvent(); return false;">
+      <label for="eventName">Event Name:</label><br>
+      <input type="text" id="eventName" name="eventName"><br>
+      <label for="eventDate">Event Date:</label><br>
+      <input type="date" id="eventDate" name="eventDate"><br><br>
+      <button type="submit">Add Event</button>
+    </form>
+  </div>
+
+  <div id="eventList">
+    <h2>Events</h2>
+    <ul id="events"></ul>
+  </div>
+
+  <script>
+    var currentDate = new Date();
+    var currentMonth = currentDate.getMonth();
+    var currentYear = currentDate.getFullYear();
+    var months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Data structure to hold events
+    var events = {};
+
+    function renderCalendar() {
+      var firstDay = new Date(currentYear, currentMonth, 1);
+      var lastDay = new Date(currentYear, currentMonth + 1, 0);
+      var daysInMonth = lastDay.getDate();
+      var startingDay = firstDay.getDay();
+
+      document.getElementById("currentMonth").textContent = months[currentMonth] + " " + currentYear;
+
+      var calendarDays = document.getElementById("calendarDays");
+      calendarDays.innerHTML = "";
+
+      for (var i = 0; i < startingDay; i++) {
+        var emptyDay = document.createElement("div");
+        emptyDay.classList.add("day");
+        calendarDays.appendChild(emptyDay);
+      }
+
+      for (var i = 1; i <= daysInMonth; i++) {
+        var day = document.createElement("div");
+        day.textContent = i;
+        day.classList.add("day");
+        day.setAttribute("data-date", currentYear + "-" + (currentMonth + 1) + "-" + i);
+        if (currentDate.getFullYear() === currentYear && currentDate.getMonth() === currentMonth && currentDate.getDate() === i) {
+          day.classList.add("today");
+        }
+        // Add event listener to each day to show event form
+        day.addEventListener("click", function() {
+          showEventForm(this.getAttribute("data-date"));
+        });
+
+        // Show events on the calendar
+        var eventDate = currentYear + "-" + (currentMonth + 1) + "-" + i;
+        if (events[eventDate]) {
+          var eventList = document.createElement("ul");
+          events[eventDate].forEach(function(event) {
+            var listItem = document.createElement("li");
+            listItem.textContent = event;
+            eventList.appendChild(listItem);
+          });
+          day.appendChild(eventList);
+        }
+
+        calendarDays.appendChild(day);
+      }
+    }
+
+    // Function to show event form
+    function showEventForm(date) {
+      var form = document.getElementById("eventForm");
+      form.style.display = "block";
+      document.getElementById("eventDate").value = date;
+    }
+
+    // Function to add event
+    function addEvent() {
+      var eventName = document.getElementById("eventName").value;
+      var eventDate = document.getElementById("eventDate").value;
+      if (!events[eventDate]) {
+        events[eventDate] = [];
+      }
+      events[eventDate].push(eventName);
+      renderCalendar(); // Render calendar again to update events
+      // Hide event form after adding event
+      document.getElementById("eventForm").style.display = "none";
+      // Clear input fields
+      document.getElementById("eventName").value = "";
+      document.getElementById("eventDate").value = "";
+    }
+
+    function prevMonth() {
+      if (currentMonth === 0) {
+        currentMonth = 11;
+        currentYear -= 1;
+      } else {
+        currentMonth -= 1;
+      }
+      renderCalendar();
+    }
+
+    function nextMonth() {
+      if (currentMonth === 11) {
+        currentMonth = 0;
+        currentYear += 1;
+      } else {
+        currentMonth += 1;
+      }
+      renderCalendar();
+    }
+
+    renderCalendar();
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+     
+    }
+    
+    .calendar {
+      max-width: 400px;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      
+    }
+    
+    .month {
+      background-color: #007bff;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+    
+    .month span {
+      cursor: pointer;
+    }
+    
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-top: 1px solid #ccc;
+    }
+    
+    .day {
+      padding: 10px;
+      text-align: center;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer; /* Add cursor pointer to indicate clickability */
+      position: relative;
+    }
+    
+    .day:last-child {
+      border-right: none;
+    }
+    
+    .today {
+      background-color: #007bff;
+      color: #fff;
+    }
+    
+    .prev,
+    .next {
+      cursor: pointer;
+    }
+    
+    .prev:hover,
+    .next:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    #eventForm {
+      max-width: 300px;
+      margin: 20px auto;
+    }
+
+    #eventForm label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #eventForm input[type="text"],
+    #eventForm input[type="date"],
+    #eventForm button {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+    #eventForm button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    #eventForm button:hover {
+      background-color: #0056b3;
+    }
+
+    #eventList {
+      margin-top: 20px;
+    }
+
+    #eventList h2 {
+      text-align: center;
+    }
+
+    #eventList ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #eventList li {
+      margin-bottom: 5px;
+    }
+  </style>
+</body>
+</html>

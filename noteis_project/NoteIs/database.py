@@ -23,10 +23,9 @@ database = firebase.database()
 
 
 
-def addUser(self):
-    data = {"name": "burak", "age": 20}
-    database.push(data)
 
+   
+    
 
 class Database:
     def register(self,email, password):
@@ -34,3 +33,16 @@ class Database:
 
     def sign_in(self,email,password):
         user = firebase.auth().sign_in_with_email_and_password(email,password)
+    
+    def adddata(self,baslik,icerik):
+        data={"baslik":baslik,"icerik":icerik}
+        database.push(data)
+
+    def get_data(self):
+        # Tüm veritabanı verilerini çek
+        all_data = database.get()
+        return all_data.val()
+    
+    def delete_data(self, data_id):
+        # Veritabanından belirli bir veriyi sil
+        database.child(data_id).remove()

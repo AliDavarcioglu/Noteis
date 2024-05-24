@@ -10,10 +10,25 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegistrationForm
 
-data =Database()
+
+database =Database()
 
 def home(request):
-    return render(request,"noteisapp/home.html")
+    data=database.get_data()
+    return render(request,"noteisapp/home.html",{'data':data})
+
+
+def todo_list(request):
+    return render(request,"noteisapp/todo_list.html")
+
+def calendar(request):
+    return render(request,"noteisapp/calendar.html")
+
+def quick_notes(request):
+    return render(request,"noteisapp/quick_notes.html")
+
+def reading_list(request):
+    return render(request,"noteisapp/reading_list.html")
 
 def login_page_view(request):
     if request.method == 'POST':
@@ -41,7 +56,7 @@ def register_page_view(request):
         password = request.POST.get('password')
 
         try:
-            data.register(email, password)
+            database.register(email, password)
             return render(request, 'noteisapp/home.html')
         except Exception as e:
             error_message = "Bir hata oluştu: {}".format(str(e))
@@ -80,10 +95,26 @@ def register_page(request):
         password = request.POST.get('password')
 
         try:
-            data.register(email, password)
+            database.register(email, password)
             return render(request, 'noteisapp/home.html')
         except Exception as e:
             error_message = "Bir hata oluştu: {}".format(str(e))
             return render(request, 'register.html', {'error_message': error_message})
     else:
         return render(request, 'register.html')
+
+
+
+
+def quick_notes(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        database.adddata(title,content)
+    return render(request,'noteisapp/quick_notes.html')
+
+
+def delete_note(request, key):
+    if request.method == 'POST':
+        database.delete_data(key)
+    return redirect('home')
