@@ -64,6 +64,23 @@
     padding: 8px;
     background-color: #f9f9f9;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 15px;
+    cursor: pointer;
+    width:30%;
+  }
+
+  .delete-btn:hover {
+    background-color: #c82333;
   }
 </style>
 </head>
@@ -96,7 +113,10 @@
 
       // Create a new list item for the book
       var bookItem = document.createElement("li");
-      bookItem.textContent = title + " by " + author;
+      bookItem.innerHTML = `
+        <span>${title} by ${author}</span>
+        <button class="delete-btn" onclick="deleteBook(this)">Delete</button>
+      `;
 
       // Add the book item to the reading list
       document.getElementById("books").appendChild(bookItem);
@@ -104,6 +124,12 @@
       // Clear the form fields after adding the book
       document.getElementById("bookTitle").value = "";
       document.getElementById("bookAuthor").value = "";
+    }
+
+    // Function to delete a book from the reading list
+    function deleteBook(button) {
+      var listItem = button.parentElement;
+      listItem.remove();
     }
   </script>
 </body>
