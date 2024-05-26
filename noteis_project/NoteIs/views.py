@@ -45,7 +45,7 @@ def login_page_view(request):
                 return render(request, 'noteisapp/login.html', {'error_message': error_message})
 
         except Exception as e:
-            error_message = "Bir hata oluştu: {}".format(str(e))
+            error_message = " Invalid password or email! "
             return render(request, 'noteisapp/login.html', {'error_message': error_message})
     else:
         return render(request, 'noteisapp/login.html')
@@ -54,12 +54,15 @@ def register_page_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        if len(password) < 6 or not any(char.isupper() for char in password):
+            error_message = "Şifre en az 6 karakter uzunluğunda olmalı ve en az bir büyük harf içermelidir."
+            return render(request, 'noteisapp/register.html', {'error_message': error_message})
 
         try:
             database.register(email, password)
             return render(request, 'noteisapp/home.html')
         except Exception as e:
-            error_message = "Bir hata oluştu: {}".format(str(e))
+            error_message = "Email address already exist!"
             return render(request, 'noteisapp/register.html', {'error_message': error_message})
     else:
         return render(request, 'noteisapp/register.html')
