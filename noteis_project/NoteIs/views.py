@@ -41,7 +41,7 @@ def login_page_view(request):
                 request.session['uid'] = user['localId']
                 return render(request, 'noteisapp/home.html')
             else:
-                error_message = "Geçersiz email veya şifre. Lütfen tekrar deneyin."
+                error_message = "Invalid email or password. Please try again."
                 return render(request, 'noteisapp/login.html', {'error_message': error_message})
 
         except Exception as e:
@@ -55,7 +55,7 @@ def register_page_view(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         if len(password) < 6 or not any(char.isupper() for char in password):
-            error_message = "Şifre en az 6 karakter uzunluğunda olmalı ve en az bir büyük harf içermelidir."
+            error_message = "The password must be at least 6 characters long and must contain at least one uppercase letter."
             return render(request, 'noteisapp/register.html', {'error_message': error_message})
 
         try:
@@ -81,11 +81,11 @@ def login_page(request):
                 request.session['uid'] = user['localId']
                 return render(request, 'noteisapp/home.html')
             else:
-                error_message = "Geçersiz email veya şifre. Lütfen tekrar deneyin."
+                error_message = "Invalid email or password. Please try again."
                 return render(request, 'login.html', {'error_message': error_message})
 
         except Exception as e:
-            error_message = "Bir hata oluştu: {}".format(str(e))
+            error_message = "An error occurred: {}".format(str(e))
             return render(request, 'login.html', {'error_message': error_message})
 
     return render(request, 'login.html')
@@ -101,7 +101,7 @@ def register_page(request):
             database.register(email, password)
             return render(request, 'noteisapp/home.html')
         except Exception as e:
-            error_message = "Bir hata oluştu: {}".format(str(e))
+            error_message = "An error occurred: {}".format(str(e))
             return render(request, 'register.html', {'error_message': error_message})
     else:
         return render(request, 'register.html')
